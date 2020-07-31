@@ -1,0 +1,26 @@
+{
+  "name": "cs546-project_manager",
+  "version": "1.0.0",
+  "description": "Final Project for CS546",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgarner413/CS546-Project_Manager.git"
+  },
+  "author": "Josh Garner, Yunxiang Fan, John Wang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jgarner413/CS546-Project_Manager/issues"
+  },
+  "homepage": "https://github.com/jgarner413/CS546-Project_Manager#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.1.0",
+    "express-session": "^1.17.1",
+    "handlebars": "^4.7.6",
+    "mongodb": "^3.6.0"
+  }
+}
