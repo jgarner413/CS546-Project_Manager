@@ -27,5 +27,79 @@ module.exports = {
         if (insertInfo.insertedCount === 0) throw 'Could not add user';
         const newId = insertInfo.insertedId;
         return await this.getUser(newId);
-},
+    },
+    async getAllUsers() {
+        const usersCollection = await users();
+        return usersCollection.find({}).toArray();
+    },
+
+    async getUser(id) {
+        if (!id) throw 'You must provide a user id to search for';
+
+        const objId = ObjectId(id);
+        const usersCollection = await users();
+        const user = await usersCollection.findOne({ _id: objId });
+        if (user === null) throw 'No user with this id';
+
+        return user;
+    },
+
+    async updateUser(id , updatedUser) {
+        const usersCollection = await users();
+    
+        const updatedUserData = {};
+    
+        if (updatedUser.firstName) {
+          updatedUserData.firstName = updatedUser.firstName;
+        }
+    
+        if (updatedUser.lastName) {
+          updatedUserData.lastName = updatedUser.lastName;
+        }
+    
+        if (updatedUser.email) {
+          updatedUserData.email = updatedUser.email;
+        }
+
+        if (updatedUser.passwordHash){
+            updatedUserData.passwordHash = updatedUser.passwordHash;
+        }
+    
+        if (updatedUser.username){
+            updatedUserData.username = updatedUser.username;
+        }
+    
+        if (updatedUser.description){
+            updatedUserData.description = updatedUser.description;
+        }
+    
+        let updateCommand = {
+          $set: updatedUserData
+        };
+        const query = {
+          _id: id
+        };
+        await usersCollection.updateOne(query, updateCommand);
+    
+        return await this.getUser(id);
+    },
+
+    async addProjectToUser(userId, projectId){
+        if(!userId) throw 'You must provide a user id';
+        if(!projectId) throw 'You must provide a project Id';
+
+        projectId = projectId.toString();
+        if(typeof(userId) === 'string')
+            userId = ObjectId(userId);
+        //if(typeof(projectId) === 'string')
+            //projectId = ObjectId(projectId);
+
+        const usersCollection = await users();
+        const updateInfo = await usersCollection.updateOne({_id: userId},{$push: {created: projectId}});
+        if (updateInfo.modifiedCount === 0)
+            throw 'Could not add the project to the user';
+
+        return true;
+    }
+};
 };
