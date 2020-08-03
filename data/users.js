@@ -84,7 +84,7 @@ module.exports = {
         return await this.getUser(id);
     },
 
-    async addProjectToUser(userId, projectId){
+    async addCreatedProjectToUser(userId, projectId){
         if(!userId) throw 'You must provide a user id';
         if(!projectId) throw 'You must provide a project Id';
 
@@ -100,6 +100,25 @@ module.exports = {
             throw 'Could not add the project to the user';
 
         return true;
-    }
-};
+    },
+
+    async addPartipantProjectToUser(userId, projectId){
+        if(!userId) throw 'You must provide a user id';
+        if(!projectId) throw 'You must provide a project Id';
+
+        projectId = projectId.toString();
+        if(typeof(userId) === 'string')
+            userId = ObjectId(userId);
+        //if(typeof(projectId) === 'string')
+            //projectId = ObjectId(projectId);
+
+        const usersCollection = await users();
+        const updateInfo = await usersCollection.updateOne({_id: userId},{$push: {participant: projectId}});
+        if (updateInfo.modifiedCount === 0)
+            throw 'Could not add the project to the user';
+
+        return true;
+    },
+
+
 };
