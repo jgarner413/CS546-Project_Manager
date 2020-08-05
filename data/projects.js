@@ -4,10 +4,10 @@ const users = require('./users');
 const { ObjectId } = require('mongodb');
 
 module.exports = {
-    async createProject(title, description, creator, members=[], deadline, time, tasks=[]) {
+    async createProject(title, description, creator, deadline, time,  members=[], tasks=[]) {
         if(!title || typeof title!= 'string') throw 'you must provide a valid title';
         if(!description || typeof description!= 'string') throw 'you must provide a valid description';
-        if(!creator || typeof creator!= 'string') throw 'you must provide a valid creator id';
+        if(!creator) throw 'you must provide a valid creator id';
         if(!time || typeof time!= 'string') throw 'you must provide a valid time';
         //if(!deadline || typeof deadline != 'Date') throw 'you must provide a valid time';
         //moment("06/22/2015", "MM/DD/YYYY", true).isValid(); true
