@@ -21,8 +21,6 @@ async function main(){
             console.log(e.toString());
     }
     
-        
-
     try {
         let yunxiang_pwd = 'yunxiang123'
         let yun_hash = await bcrypt.hash(yunxiang_pwd, saltRounds);

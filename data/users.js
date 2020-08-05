@@ -43,6 +43,14 @@ module.exports = {
 
         return user;
     },
+    async getUserByName(name) {
+        if (!name) throw 'You must provide a user id to search for';
+        const usersCollection = await users();
+        const user = await usersCollection.findOne({ username: name });
+        if (user === null) throw 'No user with this id';
+
+        return user;
+    },
 
     async updateUser(id , updatedUser) {
         const usersCollection = await users();
