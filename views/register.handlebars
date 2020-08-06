@@ -1,0 +1,19 @@
+<form id="register-form" method="POST" action="/register">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username">
+    <label for="email">email:</label>
+    <input type="text" name="email" id="email">
+    <label for="firstname">First Name:</label>
+    <input type="text" name="firstname" id="firstname">
+     <label for="lastname">Last Name:</label>
+    <input type="text" name="lastname" id="lastname">
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password">
+     <label for="description">Tell us a bit about yourself:</label>
+    <textarea type="text" name="description" id="description">
+    <button type="Submit" value="Submit">Submit</button>
+    {{#if error}}
+        <p class="error">Please complete all fields</p>
+    {{/if}}
+
+</form>
