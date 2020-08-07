@@ -21,19 +21,16 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 
-app.use(async (req, res, next) => {
-  if(req.originalUrl == "/private"){
+let directToSignIn = (req, res, next) => {
     if(req.session.loggedIn){
         next();
     }
     else{
-        res.status(403).render("error");
+        res.redirect("login");
     }
-}
-else{
-    next();
-}
-});
+};
+
+app.use("/private", directToSignIn);
 
 app.use(async (req, res, next) => {
   console.log("___________________________");
