@@ -1,0 +1,120 @@
+.topnav {
+    background-color: #333;
+    overflow: hidden;
+  }
+  
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+.topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+
+
+  * {
+	box-sizing: border-box;
+}
+
+
+
+
+body {
+	background: #dedede;
+	font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+	text-align: center;
+	font-size: 14pt;
+}
+
+main {
+	max-width: 75%;
+	margin: auto;
+}
+
+header {
+	border-bottom: 1px solid #afafaf;
+}
+
+h1,
+h2{
+	color: #222;
+	margin-bottom: 5px;
+	text-align: center;
+}
+p{
+	text-align: center;
+}
+h1 {
+	font-size: 2rem;
+}
+.grad1 {
+    background: red;
+    background: -webkit-linear-gradient(left, orange , yellow, green, cyan, blue, violet);
+    background: -o-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
+    background: -moz-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
+    background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+h2 {
+	font-size: 1.5rem;
+}
+
+p {
+	font-size: 1rem;
+	line-height: 2;
+}
+
+.success {
+	color: #28a745;
+}
+.failure {
+	color: #dc3545;
+}
+.result_title{
+	color: Impact;
+}
+
+footer{
+	text-align: center;
+    background-color: lightgrey;
+    padding: 5px;
+    border: 5px solid navy;
+    margin: 5px;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+form {
+    display: inline-block;
+}
+
+
+.links{
+	text-align: center;
+}
+
+.a:visited {
+	font-style: italic;
+	color: saddlebrown;
+}
+
+a:hover {
+	color: #228b22;
+	font-weight: 700;
+}
+
