@@ -8,7 +8,7 @@ router.get("/",async (req,res) => {
 
     let user = await users.getUserByName(req.session.user)
 
-    res.render("private",user);
+    res.render("profile",user);
 });
 
 

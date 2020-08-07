@@ -82,6 +82,8 @@ async function main(){
     } catch (e) {
         console.log(e.toString());
     }
+
+    console.log(await projects.getProjectsByUser(josh._id));
     
     await db.serverConfig.close();
 }

@@ -30,7 +30,7 @@ let directToSignIn = (req, res, next) => {
     }
 };
 
-app.use("/private", directToSignIn);
+app.use("/profile", directToSignIn);
 
 app.use(async (req, res, next) => {
   console.log("___________________________");
