@@ -16,7 +16,7 @@ async function main(){
         let josh_hash = await bcrypt.hash(josh_pwd, saltRounds);
         var josh =  await users.addUser('Josh', 'Garner','jgarner413@gmail.com', josh_hash,
                 'jgarner413','CS546 Project Manager developer');
-        console.log(josh._id)
+        console.log(typeof josh._id)
         } catch (e) {
             console.log(e.toString());
     }
@@ -56,7 +56,7 @@ async function main(){
     }
 
     try {
-        await projects.createProject('CS546 Project Management Application', 'A project management application to help users build out their projects', josh._id,
+        var cs546_final = await projects.createProject('CS546 Project Management Application', 'A project management application to help users build out their projects', josh._id,
             new Date(2020, 7, 21) , '0',[yun._id],[]); //Date is 0 indexed
     } catch (e) {
         console.log(e.toString());
@@ -71,23 +71,54 @@ async function main(){
 
     try {
         await projects.createProject('Finance Group Project', 'Presentation and analysys for finance class', red._id,
-            new Date(2020, 10, 30) , '0',[],[]); //Date month is 0 indexed
+            new Date(2020, 10, 30) , '0',[josh._id],[]); //Date month is 0 indexed
     } catch (e) {
         console.log(e.toString());
     }
 
     try {
         await projects.createProject('Building a house', 'Guide on how we are building a house. Write what tasks you are completing below', lorem._id,
-            new Date(2020, 10, 30) , '0',[],[]); //Date month is 0 indexed
+            new Date(2020, 10, 30) , '0',[josh._id],[]); //Date month is 0 indexed
     } catch (e) {
         console.log(e.toString());
     }
 
-    console.log(await projects.getProjectsByUser(josh._id));
+    try {
+        await tasks.createTask('create proposal', cs546_final._id, new Date(2020, 6, 3), "0", josh._id)
+    } catch (e) {
+        console.log(e.toString());
+    }
+    try {
+        await tasks.createTask('create db proposal', cs546_final._id, new Date(2020, 6, 21), "0", josh._id)
+    } catch (e) {
+        console.log(e.toString());
+    }
+    try {
+        await tasks.createTask('create project pitch', cs546_final._id, new Date(2020, 7, 3), "0", josh._id)
+    } catch (e) {
+        console.log(e.toString());
+    }
+    try {
+        await tasks.createTask('create db', cs546_final._id, new Date(2020, 7, 3), "0", josh._id)
+    } catch (e) {
+        console.log(e.toString());
+    }
+    try {
+        await tasks.createTask('build login page', cs546_final._id, new Date(2020, 7, 3), "0", josh._id)
+    } catch (e) {
+        console.log(e.toString());
+    }
+    try {
+        await tasks.createTask('build dashboard', cs546_final._id, new Date(2020, 7, 3), "0", josh._id)
+    } catch (e) {
+        console.log(e.toString());
+    }
+
     
     await db.serverConfig.close();
+    console.log('done seeding')
 }
 
 main().catch((error) => {
-    console.log('done seeding')
+    console.log(error.toString());
 });
