@@ -22,4 +22,9 @@ router.get("/",async (req,res) => {
     res.render("login");
 });
 
+router.get('/:id', async (req, res) => {
+
+
+
+});
 module.exports = router;

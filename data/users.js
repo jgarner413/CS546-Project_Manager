@@ -96,12 +96,6 @@ module.exports = {
         if(!userId) throw 'You must provide a user id';
         if(!projectId) throw 'You must provide a project Id';
 
-        projectId = projectId.toString();
-        if(typeof(userId) === 'string')
-            userId = ObjectId(userId);
-        //if(typeof(projectId) === 'string')
-            //projectId = ObjectId(projectId);
-
         const usersCollection = await users();
         const updateInfo = await usersCollection.updateOne({_id: userId},{$push: {created: projectId}});
         if (updateInfo.modifiedCount === 0)

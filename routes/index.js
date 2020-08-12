@@ -3,6 +3,7 @@ const profileRoutes = require("./profile");
 const logoutRoutes = require("./logout")
 const registerRoutes = require("./register")
 const projectRoutes = require("./projects")
+const addProjectRoutes = require("./addProjects")
 const path = require("path");
 
 const constructorMethod = app => {
@@ -11,6 +12,7 @@ const constructorMethod = app => {
   app.use("/logout", logoutRoutes);
   app.use("/profile", profileRoutes);
   app.use("/projects", projectRoutes);
+  app.use("/addProjects", addProjectRoutes);
 
   app.use("*", (req, res) => {
     res.redirect("/profile");

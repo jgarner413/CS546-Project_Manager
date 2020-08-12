@@ -8,14 +8,14 @@ const saltRounds = 16;
 
 router.get("/",async (req,res) => {
     if(req.session.user){
-        res.redirect("/private");
+        res.redirect("/profile");
         return;
     }
     res.render("register");
 });
 
 router.post("/", async (req, res) => {
-    console.log("there")
+
     let username = req.body.username;
     let email = req.body.email
     let firstName = req.body.firstName
@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
             req.session.loggedIn = true;
             req.session.user = user.username;
             
-            res.redirect("/private");
+            res.redirect("/profile");
         } else{
             res.status(401).render("login", {error:true});
         }
