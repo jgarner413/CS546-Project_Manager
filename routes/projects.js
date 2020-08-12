@@ -11,7 +11,12 @@ router.get("/",async (req,res) => {
     if(req.session.user){
         console.log(req.session.userid)
         let user_projects = await projects.getProjectsByUser(req.session.userid);
-        res.render("projects",{CreatedProjects: user_projects});
+        console.log(user_projects);
+        let user = await users.getUser(req.session.userid);
+        let teamProjectsArr = user.participant;
+        let teamProjects = await projects.getProjectsByArray(teamProjectsArr);
+        console.log(teamProjects)
+        res.render("projects",{CreatedProjects: user_projects, TeamProjects: teamProjects });
         return;
     }
     res.render("login");

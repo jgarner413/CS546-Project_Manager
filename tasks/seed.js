@@ -70,18 +70,31 @@ async function main(){
     }
 
     try {
-        await projects.createProject('Finance Group Project', 'Presentation and analysys for finance class', red._id,
+        var finance = await projects.createProject('Finance Group Project', 'Presentation and analysys for finance class', red._id,
             new Date(2020, 10, 30) , '0',[josh._id],[]); //Date month is 0 indexed
     } catch (e) {
         console.log(e.toString());
     }
 
     try {
-        await projects.createProject('Building a house', 'Guide on how we are building a house. Write what tasks you are completing below', lorem._id,
+        var house = await projects.createProject('Building a house', 'Guide on how we are building a house. Write what tasks you are completing below', lorem._id,
             new Date(2020, 10, 30) , '0',[josh._id],[]); //Date month is 0 indexed
     } catch (e) {
         console.log(e.toString());
     }
+    try {
+        await users.addPartipantProjectToUser(josh._id, finance._id);
+    } catch (e) {
+        console.log(e.toString());
+    }
+
+    try {
+        await users.addPartipantProjectToUser(josh._id, house._id);
+    } catch (e) {
+        console.log(e.toString());
+    }
+
+
 
     try {
         await tasks.createTask('create proposal', cs546_final._id, new Date(2020, 6, 3), "0", josh._id)

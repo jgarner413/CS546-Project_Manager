@@ -71,4 +71,13 @@ module.exports = {
 
         return await this.getProject(projectId);
     },
+
+    async getProjectsByArray(projectArray){
+        if (!projectArray) throw 'You must provide a list of project ids';
+        const projectsCollection = await projects();
+        const projectObjectArray = projectArray.map(x => ObjectId(x));
+        console.log(projectObjectArray);
+        const userProjects = await projectsCollection.find({"_id" : {"$in" : projectObjectArray }}).toArray();
+        return userProjects;
+    }
 };
