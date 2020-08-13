@@ -1,2 +1,16 @@
-<h2>Project Title</h2>
-<p>This is the description of the project</p>
+<h2>{{Project.title}}</h2>
+<p>{{Project.description}}</p>
+<p>Owner: {{Project.creator}}</p>
+<p>Deadline: {{Project.deadline}}</p>
+<p>Time worked on project: {{Project.time}}</p>
+<p>Members: {{Project.members}}</p>
+<h3>Tasks</h3>
+{{#each Tasks}}
+    <div class="column">
+        <div class="card">
+            <h3>{{Tasks.title}}</h3>
+            <p>{{Tasks.description}}</p>
+            <p>deadline: {{Tasks.deadline}}</p>
+        </div>
+    </div>
+{{/each}}

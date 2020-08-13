@@ -23,8 +23,8 @@ router.get("/",async (req,res) => {
 });
 
 router.get('/:id', async (req, res) => {
-
-
+    let project = await projects.getProject(req.params.id);
+    res.render('project', {Project: project});
 
 });
 module.exports = router;
