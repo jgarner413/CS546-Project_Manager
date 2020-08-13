@@ -4,13 +4,16 @@
 <p>Deadline: {{Project.deadline}}</p>
 <p>Time worked on project: {{Project.time}}</p>
 <p>Members: {{Project.members}}</p>
+<div class="row">
 <h3>Tasks</h3>
 {{#each Tasks}}
     <div class="column">
         <div class="card">
-            <h3>{{Tasks.title}}</h3>
-            <p>{{Tasks.description}}</p>
-            <p>deadline: {{Tasks.deadline}}</p>
+            <h3>{{title}}</h3>
+            <p>{{description}}</p>
+            <p>deadline: {{deadline}}</p>
+            <p>Assigned to: {{assignedTo}}</p>
         </div>
     </div>
 {{/each}}
+</div>

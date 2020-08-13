@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const users = require("../data/users")
 const projects = require("../data/projects")
+const tasks = require("../data/tasks")
 const user_func = require("../data/user_func")
 const saltRounds = 16;
 
@@ -24,7 +25,8 @@ router.get("/",async (req,res) => {
 
 router.get('/:id', async (req, res) => {
     let project = await projects.getProject(req.params.id);
-    res.render('project', {Project: project});
+    let projectTasks = await tasks.getTaskByProjectID(req.params.id);
+    res.render('project', {Project: project, Tasks: projectTasks});
 
 });
 module.exports = router;

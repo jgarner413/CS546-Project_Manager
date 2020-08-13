@@ -24,18 +24,18 @@ router.post("/", async (req, res) => {
     let description = req.body.description
     let deadline = req.body.deadline
     let teammembers = req.body.teammembers
-
+    let d = new Date(deadline)
     
     console.log(title);
     console.log(description);
-    console.log(deadline);
+    console.log(d);
     console.log(teammembers);
     const teamMembersObjectArray = teammembers.map(x => ObjectId(x));
-    if (!title || !description || !deadline || !teammembers){
+    if (!title || !description || !d || !teammembers){
         res.status(401).render("addProjects", {error: true, userList: user_list });
         return;
     }
-    let newProject = await projects.createProject(title,description,ObjectId(req.session.userid), deadline, '0', teamMembersObjectArray, []);
+    let newProject = await projects.createProject(title,description,ObjectId(req.session.userid), d, '0', teamMembersObjectArray, []);
     for(x of teamMembersObjectArray){
         await users.addPartipantProjectToUser(x,newProject._id);
     }
