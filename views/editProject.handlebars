@@ -1,0 +1,26 @@
+<br>
+<h2>Edit Project</h2>
+<form id="edit-project-form" method="POST" action="/projects/editProject">
+    <label for="title">Title:</label>
+    <input type="text" name="title" id="title" value="{{Project.title}}">
+    <label for="description">description:</label>
+    <input type="text" name="description" id="description" value="{{Project.description}}">
+    <label for="deadline">Deadline:</label>
+    <input type="date" id="deadline" name="deadline"
+       value="{{Project.deadline}}"
+       min="2020-01-01" max="2021-12-31">
+    <label for="teammembers">Choose your team members:</label>
+        <select name="teammembers" id="teammembers" multiple>
+            {{#each userList}}
+                <option value={{_id}}>{{firstName}} {{lastName}}</option>
+            {{/each}}
+
+    </select>
+    <input type="hidden" id="projectid" name="projectid" value="{{Project._id}}">
+    <button type="Submit" value="Submit">Submit</button>
+    {{#if error}}
+        <p class="error">Please complete all fields</p>
+    {{/if}}
+
+</form>
+<p>To select multiple members, CTRL Click each name on windows or Command Click on Mac</p>

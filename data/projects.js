@@ -53,18 +53,20 @@ module.exports = {
         return userProjects;
     },
 
-    async updateProject(projectId, title, description, deadline) {
+    async updateProject(projectId, title, description, deadline, teammembers) {
 
         if (!projectId) throw 'You must provide a project id to update';
         if (!title) throw 'You must provide a title for your project';
         if (!description) throw 'You must provide a description for your project';
         if (!deadline) throw 'You must provide a deadline for your project';
+        if (!teammembers) throw 'You must provide a deadline for your project';
+
 
 
         const objId = ObjectId(projectId);
         const projectsCollection = await projects();
         const updatedInfo = await projectsCollection.updateOne({ _id: objId }, { $set: {title: title, description: description,
-            deadline: deadline}});
+            deadline: deadline, members: teammembers}});
         if (updatedInfo.modifiedCount === 0) {
             throw 'Could not update project successfully';
         }

@@ -6,7 +6,7 @@ const projects = require("../data/projects")
 const tasks = require("../data/tasks")
 const user_func = require("../data/user_func")
 const saltRounds = 16;
-
+const { ObjectId } = require('mongodb');
 
 router.get("/",async (req,res) => {
     if(req.session.user){
@@ -27,6 +27,36 @@ router.get('/:id', async (req, res) => {
     let project = await projects.getProject(req.params.id);
     let projectTasks = await tasks.getTaskByProjectID(req.params.id);
     res.render('project', {Project: project, Tasks: projectTasks});
+
+});
+
+router.get('/edit/:id', async (req, res) => {
+    console.log(req.params.id);
+    let user_list = await users.getAllUsers();
+    let project = await projects.getProject(req.params.id);
+    //let projectTasks = await tasks.getTaskByProjectID(req.params.id);
+    res.render('editProject', {Project: project, userList: user_list});
+
+});
+
+router.post('/editProject', async (req, res) => {
+    console.log('here')
+    let user_list = await users.getAllUsers();
+    let title = req.body.title;
+    let description = req.body.description
+    let deadline = req.body.deadline
+    let teammembers = req.body.teammembers
+    let project_id = req.body.projectid
+    let d = new Date(deadline)
+
+    const teamMembersObjectArray = teammembers.map(x => ObjectId(x));
+    if (!title || !description || !d || !teammembers){
+        res.status(401).render("editProject", {error: true, userList: user_list });
+        return;
+    }
+    console.log('below')
+    let newProject = await projects.updateProject(project_id,title, description, d, teamMembersObjectArray)
+    res.redirect('/projects')
 
 });
 module.exports = router;
