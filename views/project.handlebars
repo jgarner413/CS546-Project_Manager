@@ -5,11 +5,13 @@
 <p>Time worked on project: {{Project.time}}</p>
 <p>Members: {{Project.members}}</p>
 <a href="/projects/edit/{{Project._id}}">Edit Project</a>
+<br>
+<a href="/tasks/{{Project._id}}">Add Task</a>
 <div class="row">
 <h3>Tasks</h3>
 {{#each Tasks}}
-    <div class="column">
-        <div class="card">
+    <div class="column1">
+        <div class="task">
             <h3>{{title}}</h3>
             <p>{{description}}</p>
             <p>deadline: {{deadline}}</p>

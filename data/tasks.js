@@ -5,7 +5,9 @@ const tasks = mongoCollections.tasks;
 const { ObjectId } = require('mongodb');
 
 module.exports = {
-    async createTask(title, project_id, deadline, timespent, assignedTo) {
+    async createTask(title, projectID, deadline, timespent, assigned_To) {
+        let project_id = ObjectId(projectID);
+        let assignedTo = ObjectId(assigned_To);
         if(!title || typeof title!= 'string') throw 'you must provide a valid title';
         if(!project_id || typeof project_id!= 'object') throw 'you must provide a valid project id';
         if(!assignedTo || typeof assignedTo!= 'object') throw 'you must provide a valid assigner';
