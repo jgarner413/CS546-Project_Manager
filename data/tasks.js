@@ -49,5 +49,25 @@ module.exports = {
         return tasksForProject;
     },
 
+    async updateTask(taskId, title, timespent, deadline, assignedTo) {
+
+        let task_Id = ObjectId(taskId);
+        let assigned_To = ObjectId(assignedTo);
+        if(!title || typeof title!= 'string') throw 'you must provide a valid title';
+        //if(!project_id || typeof project_id!= 'object') throw 'you must provide a valid project id';
+        if(!assigned_To || typeof assigned_To!= 'object') throw 'you must provide a valid assigner';
+        if(!timespent || typeof timespent!= 'string') throw 'you must provide a valid time';
+
+
+        const tasksCollection = await tasks();
+        const updatedInfo = await tasksCollection.updateOne({ _id: task_Id }, { $set: {title: title, timespent: timespent,
+            deadline: deadline, assignedTo: assigned_To}});
+        if (updatedInfo.modifiedCount === 0) {
+            throw 'Could not update project successfully';
+        }
+
+        return await this.getTask(task_Id);
+    },
+
 
 };
