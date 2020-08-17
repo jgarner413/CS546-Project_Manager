@@ -2,6 +2,7 @@ const mongoCollections = require('../config/mongoCollections');
 const projects = mongoCollections.projects;
 const users = mongoCollections.users;
 const { ObjectId } = require('mongodb');
+const xss = require('xss');
 
 module.exports = {
     async addUser(firstName, lastName, email, passwordHash, username, description, created=[], participant=[]) {
@@ -14,14 +15,14 @@ module.exports = {
 
         const usersCollection = await users();
         let newUser = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        passwordHash: passwordHash,
-        username: username,
-        description: description,
-        created: created,
-        participant: participant
+        firstName: xss(firstName),
+        lastName: xss(lastName),
+        email: xss(email),
+        passwordHash: xss(passwordHash),
+        username: xss(username),
+        description: xss(description),
+        created: xss(created),
+        participant: xss(participant)
         };
         const insertInfo = await usersCollection.insertOne(newUser);
         if (insertInfo.insertedCount === 0) throw 'Could not add user';
@@ -97,7 +98,7 @@ module.exports = {
         if(!projectId) throw 'You must provide a project Id';
 
         const usersCollection = await users();
-        const updateInfo = await usersCollection.updateOne({_id: userId},{$push: {created: projectId}});
+        const updateInfo = await usersCollection.updateOne({_id: xss(userId)},{$push: {created: xss(projectId)}});
         if (updateInfo.modifiedCount === 0)
             throw 'Could not add the project to the user';
 
@@ -115,7 +116,7 @@ module.exports = {
             //projectId = ObjectId(projectId);
 
         const usersCollection = await users();
-        const updateInfo = await usersCollection.updateOne({_id: userId},{$push: {participant: projectId}});
+        const updateInfo = await usersCollection.updateOne({_id: xss(userId)},{$push: {participant: xss(projectId)}});
         if (updateInfo.modifiedCount === 0)
             throw 'Could not add the project to the user';
 

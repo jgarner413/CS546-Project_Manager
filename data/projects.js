@@ -2,6 +2,7 @@ const mongoCollections = require('../config/mongoCollections');
 const projects = mongoCollections.projects;
 const users = require('./users');
 const { ObjectId } = require('mongodb');
+const xss = require('xss');
 
 module.exports = {
     async createProject(title, description, creator, deadline, time,  members=[], tasks=[]) {
@@ -15,13 +16,13 @@ module.exports = {
 
         const projectsCollection = await projects();
         let newProject = {
-            title: title,
-            description: description,
-            creator: creator,
-            members: members,
-            deadline: deadline,
-            time: time,
-            tasks: tasks
+            title: xss(title),
+            description: xss(description),
+            creator: xss(creator),
+            members: xss(members),
+            deadline: xss(deadline),
+            time: xss(time),
+            tasks: xss(tasks)
         }
         const insertInfo = await projectsCollection.insertOne(newProject);
         if (insertInfo.insertedCount === 0) throw 'Could not add project';
@@ -65,8 +66,8 @@ module.exports = {
 
         const objId = ObjectId(projectId);
         const projectsCollection = await projects();
-        const updatedInfo = await projectsCollection.updateOne({ _id: objId }, { $set: {title: title, description: description,
-            deadline: deadline, members: teammembers}});
+        const updatedInfo = await projectsCollection.updateOne({ _id: objId }, { $set: {title: xss(title), description: xss(description),
+            deadline: xss(deadline), members: xss(teammembers)}});
         if (updatedInfo.modifiedCount === 0) {
             throw 'Could not update project successfully';
         }

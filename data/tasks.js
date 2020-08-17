@@ -3,6 +3,7 @@ const projects = mongoCollections.projects;
 const users = mongoCollections.users;
 const tasks = mongoCollections.tasks;
 const { ObjectId } = require('mongodb');
+const xss = require('xss');
 
 module.exports = {
     async createTask(title, projectID, deadline, timespent, assigned_To) {
@@ -18,11 +19,11 @@ module.exports = {
 
         const tasksCollection = await tasks();
         let newTask = {
-            title: title,
-            project_id: project_id,
-            deadline: deadline,
-            timespent: timespent,
-            assignedTo: assignedTo,
+            title: xss(title),
+            project_id: xss(project_id),
+            deadline: xss(deadline),
+            timespent: xss(timespent),
+            assignedTo: xss(assignedTo),
         }
         const insertInfo = await tasksCollection.insertOne(newTask);
         if (insertInfo.insertedCount === 0) throw 'Could not add task';
@@ -60,8 +61,8 @@ module.exports = {
 
 
         const tasksCollection = await tasks();
-        const updatedInfo = await tasksCollection.updateOne({ _id: task_Id }, { $set: {title: title, timespent: timespent,
-            deadline: deadline, assignedTo: assigned_To}});
+        const updatedInfo = await tasksCollection.updateOne({ _id: task_Id }, { $set: {title: xss(title), timespent: xss(timespent),
+            deadline: xss(deadline), assignedTo: xss(assigned_To)}});
         if (updatedInfo.modifiedCount === 0) {
             throw 'Could not update project successfully';
         }
