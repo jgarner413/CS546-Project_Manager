@@ -59,4 +59,12 @@ router.post('/editProject', async (req, res) => {
     res.redirect('/projects')
 
 });
+router.post('/deleteproject/:id', async (req, res) => {
+    try {
+        await projects.removeProject(req.params.id);
+    } catch (error) {
+        console.log(error)
+    }
+    res.redirect('/projects')
+});
 module.exports = router;
