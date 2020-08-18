@@ -62,13 +62,16 @@ router.post('/editProject', async (req, res) => {
     let deadline = req.body.deadline
     let teammembers = req.body.teammembers
     let project_id = req.body.projectid
+    let project = await projects.getProject(project_id);
     let d = new Date(deadline)
 
-    const teamMembersObjectArray = teammembers.map(x => ObjectId(x));
+    
     if (!title || !description || !d || !teammembers){
-        res.status(401).render("editProject", {error: true, userList: user_list });
+        res.status(401).render("editProject", {error: true, Project: project, userList: user_list });
         return;
     }
+    console.log(teammembers);
+    const teamMembersObjectArray = teammembers.map(x => ObjectId(x));
     console.log('below')
     let newProject = await projects.updateProject(project_id,title, description, d, teamMembersObjectArray)
     res.redirect('/projects')

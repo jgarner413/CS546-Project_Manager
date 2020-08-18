@@ -30,11 +30,12 @@ router.post("/", async (req, res) => {
     console.log(description);
     console.log(d);
     console.log(teammembers);
-    const teamMembersObjectArray = teammembers.map(x => ObjectId(x));
+    
     if (!title || !description || !d || !teammembers){
         res.status(401).render("addProjects", {error: true, userList: user_list });
         return;
     }
+    const teamMembersObjectArray = teammembers.map(x => ObjectId(x));
     let newProject = await projects.createProject(title,description,ObjectId(req.session.userid), d, '0', teamMembersObjectArray, []);
     await users.addCreatedProjectToUser(ObjectId(req.session.userid),newProject._id)
     for(x of teamMembersObjectArray){

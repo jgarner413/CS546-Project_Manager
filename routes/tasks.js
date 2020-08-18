@@ -49,12 +49,12 @@ router.post('/editTask', async (req, res) => {
     let assignedTo = req.body.assignedTo;
     let d = new Date(deadline)
     assignedTo = ObjectId(assignedTo);
-
+    let task = await tasks.getTask(taskid);
     if (!title || !deadline || !d || !assignedTo){
-        res.status(401).render("editTask", {error: true, userList: user_list });
+        res.status(401).render("editTask", {error: true, Task: task, userList: user_list });
         return;
     }
-    let task = await tasks.getTask(taskid);
+    
     let newProject = await tasks.updateTask(taskid, title, task.timespent, d, assignedTo)
     res.redirect("/projects/" + task.project_id);
 
