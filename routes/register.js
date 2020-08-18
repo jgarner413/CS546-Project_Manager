@@ -43,6 +43,7 @@ router.post("/", async (req, res) => {
 
             req.session.loggedIn = true;
             req.session.user = user.username;
+            req.session.userid = user._id;
             
             res.redirect("/profile");
         } else{
