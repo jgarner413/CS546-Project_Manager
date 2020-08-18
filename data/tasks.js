@@ -78,6 +78,15 @@ module.exports = {
           throw `Could not delete post with id of ${id}`;
         return true;
       },
+    
+    async getTasksByUser(userId) {
+        if (!userId) throw 'You must provide a user id to search for';
+
+        const objId = ObjectId(userId);
+        const tasksCollection = await tasks();
+        const userTasks = await tasksCollection.find({ assignedTo: objId }).toArray();
+        return userTasks;
+    },
 
 
 };
