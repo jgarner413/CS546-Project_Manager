@@ -60,4 +60,14 @@ router.post('/editTask', async (req, res) => {
 
 });
 
+router.post('/deletetask/:id', async (req, res) => {
+    try {
+        var task = await tasks.getTask(req.params.id)
+        await tasks.removeTask(req.params.id);
+    } catch (error) {
+        console.log(error)
+    }
+    res.redirect("/projects/" + task.project_id);
+});
+
 module.exports = router;

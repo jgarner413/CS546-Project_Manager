@@ -18,11 +18,11 @@ module.exports = {
         let newProject = {
             title: xss(title),
             description: xss(description),
-            creator: xss(creator),
-            members: xss(members),
-            deadline: xss(deadline),
+            creator: creator,
+            members: members,
+            deadline: deadline,
             time: xss(time),
-            tasks: xss(tasks)
+            tasks: tasks
         }
         const insertInfo = await projectsCollection.insertOne(newProject);
         if (insertInfo.insertedCount === 0) throw 'Could not add project';
@@ -69,7 +69,7 @@ module.exports = {
         const objId = ObjectId(projectId);
         const projectsCollection = await projects();
         const updatedInfo = await projectsCollection.updateOne({ _id: objId }, { $set: {title: xss(title), description: xss(description),
-            deadline: xss(deadline), members: xss(teammembers)}});
+            deadline: deadline, members: teammembers}});
         if (updatedInfo.modifiedCount === 0) {
             throw 'Could not update project successfully';
         }
@@ -84,5 +84,13 @@ module.exports = {
         console.log(projectObjectArray);
         const userProjects = await projectsCollection.find({"_id" : {"$in" : projectObjectArray }}).toArray();
         return userProjects;
-    }
+    },
+    async removeProject(id) {
+        const projectCollection = await projects();
+        const objId = ObjectId(id);
+        const deletionInfo = await projectCollection.deleteOne({ _id: objId });
+        if (deletionInfo.deletedCount === 0)
+          throw `Could not delete project with id of ${id}`;
+        return true;
+      },
 };

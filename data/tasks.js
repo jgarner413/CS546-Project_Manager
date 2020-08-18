@@ -16,11 +16,11 @@ module.exports = {
         //if(!deadline || typeof deadline != 'Date') throw 'you must provide a valid time';
         //moment("06/22/2015", "MM/DD/YYYY", true).isValid(); true
         //may need moment.js package
-
+        project_id = ObjectId(projectID);
         const tasksCollection = await tasks();
         let newTask = {
             title: xss(title),
-            project_id: xss(project_id),
+            project_id: project_id,
             deadline: xss(deadline),
             timespent: xss(timespent),
             assignedTo: xss(assignedTo),
@@ -69,6 +69,15 @@ module.exports = {
 
         return await this.getTask(task_Id);
     },
+    
+    async removeTask(id) {
+        const taskCollection = await tasks();
+        const objId = ObjectId(id);
+        const deletionInfo = await taskCollection.deleteOne({ _id: objId });
+        if (deletionInfo.deletedCount === 0)
+          throw `Could not delete post with id of ${id}`;
+        return true;
+      },
 
 
 };
