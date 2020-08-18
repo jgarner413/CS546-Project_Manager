@@ -98,13 +98,9 @@ module.exports = {
         if(!projectId) throw 'You must provide a project Id';
 
         const usersCollection = await users();
-<<<<<<< HEAD
         if(typeof(userId) === 'string')
             userId = ObjectId(userId);
         const updateInfo = await usersCollection.updateOne({_id: userId}, {$push: {created: xss(projectId)}});
-=======
-        const updateInfo = await usersCollection.updateOne({_id: userId},{$push: {created: projectId}});
->>>>>>> 91ae7d4be93ad7d422f49423d66fc8891d372c20
         if (updateInfo.modifiedCount === 0)
             throw 'Could not add the project to the user';
 
@@ -122,11 +118,7 @@ module.exports = {
             //projectId = ObjectId(projectId);
 
         const usersCollection = await users();
-<<<<<<< HEAD
         const updateInfo = await usersCollection.updateOne({_id: userId},{$push: {participant: xss(projectId)}});
-=======
-        const updateInfo = await usersCollection.updateOne({_id: userId},{$push: {participant: projectId}});
->>>>>>> 91ae7d4be93ad7d422f49423d66fc8891d372c20
         if (updateInfo.modifiedCount === 0)
             throw 'Could not add the project to the user';
 
