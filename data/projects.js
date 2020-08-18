@@ -26,7 +26,9 @@ module.exports = {
         }
         const insertInfo = await projectsCollection.insertOne(newProject);
         if (insertInfo.insertedCount === 0) throw 'Could not add project';
-        const newId = insertInfo.insertedId;
+        // const addToCreator = await users.addCreatedProjectToUser(insertInfo.creator, insertInfo.insertedId);
+        // members.forEach(element => await users.addPartipantProjectToUser(element,insertInfo.insertedId))
+        const newId = insertInfo.insertedId; 
         return await this.getProject(newId);
     },
 

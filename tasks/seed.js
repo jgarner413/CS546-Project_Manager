@@ -10,13 +10,14 @@ const saltRounds = 16;
 async function main(){
     const db = await dbConnection();
     await db.dropDatabase();
+    let i = 0;
 
     try {
         let josh_pwd = 'josh123'
         let josh_hash = await bcrypt.hash(josh_pwd, saltRounds);
-        var josh =  await users.addUser('Josh', 'Garner','jgarner413@gmail.com', josh_hash,
-                'jgarner413','CS546 Project Manager developer');
-        console.log(typeof josh._id)
+        var josh =  await users.addUser('Josh', 'Garner','jgarner413@gmail.com', josh_hash, 'jgarner413','CS546 Project Manager developer');
+        console.log(typeof josh._id);
+        console.log(i++);
         } catch (e) {
             console.log(e.toString());
     }
@@ -24,75 +25,83 @@ async function main(){
     try {
         let yunxiang_pwd = 'yunxiang123'
         let yun_hash = await bcrypt.hash(yunxiang_pwd, saltRounds);
-        var yun =  await users.addUser('Yunxiang', 'Fan','Fan@gmail.com', yun_hash,
-                'Fan','CS546 Project Manager developer');
+        var yun =  await users.addUser('Yunxiang', 'Fan','Fan@gmail.com', yun_hash, 'Fan','CS546 Project Manager developer');
+        console.log(i++);
         } catch (e) {
             console.log(e.toString());
     }
     try {
         let john_pwd = 'John123'
         let john_hash = await bcrypt.hash(john_pwd, saltRounds);
-        var john =  await users.addUser('John', 'doe','jdoe@gmail.com', john_hash,
-                'jdoe35','New user for cs546');
+        var john =  await users.addUser('John', 'doe','jdoe@gmail.com', john_hash, 'jdoe35','New user for cs546');
+        console.log(i++);
         } catch (e) {
             console.log(e.toString());
     }
     try {
         let lorem_pwd = 'lorem123'
         let lorem_hash = await bcrypt.hash(lorem_pwd, saltRounds);
-        var lorem =  await users.addUser('Lorem', 'Ipsum','loremipsum@gmail.com', lorem_hash,
-                'loremlorem','random text description');
-        } catch (e) {
+        var lorem =  await users.addUser('Lorem', 'Ipsum','loremipsum@gmail.com', lorem_hash, 'loremlorem','random text description');
+        console.log(i++);    
+    } catch (e) {
             console.log(e.toString());
     }
 
     try {
         let red_pwd = 'red123'
         let red_hash = await bcrypt.hash(red_pwd, saltRounds);
-        var red =  await users.addUser('Red', 'Boxer','BoxingRed@gmail.com', red_hash,
-                'RedBoxREd',"Josh's dog red");
+        var red =  await users.addUser('Red', 'Boxer','BoxingRed@gmail.com', red_hash, 'RedBoxREd',"Josh's dog red");
+        console.log(i++);
         } catch (e) {
             console.log(e.toString());
     }
 
     try {
-        var cs546_final = await projects.createProject('CS546 Project Management Application', 'A project management application to help users build out their projects', josh._id,
-            new Date(2020, 7, 21) , '0',[yun._id],[]); //Date is 0 indexed
+        var cs546_final = await projects.createProject('CS546 Project Management Application', 'A project management application to help users build out their projects', josh._id, new Date(2020, 7, 21) , '0',[yun._id],[]); //Date is 0 indexed
+        await users.addCreatedProjectToUser(josh._id,cs546_final._id);
+        await users.addPartipantProjectToUser(yun._id,cs546_final._id);
+        console.log(i++);
     } catch (e) {
         console.log(e.toString());
     }
 
     try {
-        await projects.createProject('Building a chatbot', 'Tasks on building out our chatbot', josh._id,
-            new Date(2020, 8, 18) , '0',[],[]); //Date is 0 indexed
+        var poject1 = await projects.createProject('Building a chatbot', 'Tasks on building out our chatbot', josh._id, new Date(2020, 8, 18) , '0',[],[]); //Date is 0 indexed
+        await users.addCreatedProjectToUser(josh._id,poject1._id);
+        console.log(i++);
     } catch (e) {
         console.log(e.toString());
     }
 
     try {
-        var finance = await projects.createProject('Finance Group Project', 'Presentation and analysys for finance class', red._id,
-            new Date(2020, 10, 30) , '0',[josh._id],[]); //Date month is 0 indexed
-    } catch (e) {
+        var finance = await projects.createProject('Finance Group Project', 'Presentation and analysys for finance class', red._id, new Date(2020, 10, 30) , '0',[josh._id],[]); //Date month is 0 indexed
+        await users.addCreatedProjectToUser(red._id,finance._id)
+        await users.addPartipantProjectToUser(josh._id,finance._id)
+        console.log(i++);
+        } catch (e) {
         console.log(e.toString());
     }
 
     try {
-        var house = await projects.createProject('Building a house', 'Guide on how we are building a house. Write what tasks you are completing below', lorem._id,
-            new Date(2020, 10, 30) , '0',[josh._id],[]); //Date month is 0 indexed
-    } catch (e) {
-        console.log(e.toString());
-    }
-    try {
-        await users.addPartipantProjectToUser(josh._id, finance._id);
-    } catch (e) {
-        console.log(e.toString());
-    }
+        var house = await projects.createProject('Building a house', 'Guide on how we are building a house. Write what tasks you are completing below', lorem._id, new Date(2020, 10, 30) , '0',[josh._id],[]); //Date month is 0 indexed
 
-    try {
-        await users.addPartipantProjectToUser(josh._id, house._id);
+        await users.addCreatedProjectToUser(lorem._id,house._id)
+        await users.addPartipantProjectToUser(josh._id,house._id)
+        console.log(i++);
     } catch (e) {
         console.log(e.toString());
     }
+    // try {
+    //     await users.addPartipantProjectToUser(josh._id, finance._id);
+    // } catch (e) {
+    //     console.log(e.toString());
+    // }
+
+    // try {
+    //     await users.addPartipantProjectToUser(josh._id, house._id);
+    // } catch (e) {
+    //     console.log(e.toString());
+    // }
 
 
 

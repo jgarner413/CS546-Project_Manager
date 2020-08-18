@@ -9,7 +9,7 @@ router.get("/",async (req,res) => {
         res.redirect("/profile");
         return;
     }
-    res.render("login");
+    res.render("login", { layout: false });
 });
 
 
@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
     let password = req.body.password;
 
     if (!username || !password){
-        res.status(401).render("login", {error:true});
+        res.status(401).render("login", {error:true, layout: false });
         return;
     }
     let user = await users.getUserByName(username)
@@ -33,11 +33,11 @@ router.post("/", async (req, res) => {
             
             res.redirect("/profile");
         } else{
-            res.status(401).render("login", {error:true});
+            res.status(401).render("login", {error:true,  layout: false });
         }
     } else{
 
-        res.status(401).render("login", {error:true});
+        res.status(401).render("login", {error:true,  layout: false });
     }
 
 });

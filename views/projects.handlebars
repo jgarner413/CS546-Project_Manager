@@ -1,26 +1,34 @@
 <h2>Your Created Projects</h2>
 <div class="row">
-{{#each CreatedProjects}}
-    <div class="column">
-        <div class="card">
-            <h3>{{title}}</h3>
-            <p>{{description}}</p>
-            <p>deadline: {{deadline}}</p>
-            <a href="/projects/{{_id}}">Visit Project</a>
-        </div>
-    </div>
-{{/each}}
+    {{#if CreatedCount}}
+        {{#each CreatedProjects}}
+            <div class="column">
+                <div class="card">
+                    <h3>{{title}}</h3>
+                    <p>{{description}}</p>
+                    <p>deadline: {{deadline}}</p>
+                    <a href="/projects/{{_id}}">Visit Project</a>
+                </div>
+            </div>
+        {{/each}}
+    {{else}}
+        <h3>You have not created any project yet.</h3>
+    {{/if}}
 </div>
 <h2>Your Team Projects</h2>
 <div class="row">
-{{#each TeamProjects}}
-    <div class="column">
-        <div class="card">
-            <h3>{{title}}</h3>
-            <p>{{description}}</p>
-            <p>deadline: {{deadline}}</p>
-            <a href="/projects/{{_id}}">Visit Project</a>
-        </div>
-    </div>
-{{/each}}
+    {{#if ParticipatedCount}}
+        {{#each TeamProjects}}
+            <div class="column">
+                <div class="card">
+                    <h3>{{title}}</h3>
+                    <p>{{description}}</p>
+                    <p>deadline: {{deadline}}</p>
+                    <a href="/projects/{{_id}}">Visit Project</a>
+                </div>
+            </div>
+        {{/each}}
+    {{else}}
+        <h3>You have not participated any project yet.</h3>
+    {{/if}}
 </div>

@@ -30,11 +30,11 @@ router.post("/", async (req, res) => {
     console.log(description);
 
     if (!username || !password || !email || !firstName || !lastName || !description){
-        res.status(401).render("login", {error:true});
+        res.status(401).render("login", {error:true, layout:false});
         return;
     }
     let password_hash = await bcrypt.hash(password, saltRounds);
-    let user_db = await users.addUser(firstName, lastName, email, password_hash, username, description, [], []);
+    let user_db = await users.addUser(firstName, lastName, email, password_hash, username, description);
     console.log(user_db);
     let user = await users.getUserByName(username)
     if(user){
@@ -46,11 +46,11 @@ router.post("/", async (req, res) => {
             
             res.redirect("/profile");
         } else{
-            res.status(401).render("login", {error:true});
+            res.status(401).render("login", {error:true, layout:false});
         }
     } else{
 
-        res.status(401).render("login", {error:true});
+        res.status(401).render("login", {error:true, layout:false});
     }
 
 });

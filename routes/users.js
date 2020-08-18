@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const express = require('express');
 const router = express.Router();
 const data = require('../data');
+const xss = require('xss');
 const userData = data.users;
 const taskData = data.tasks;
 const projectData = data.pojects;
@@ -17,50 +18,30 @@ router.get("/:id", (req, res) => {
       });
 });
 
-router.post("/", (req, res) => {
+router.post("/register", (req, res) => {
     let userInfo = req.body;
-  
     if (!userInfo) {
-      res.status(400).json({ error: "You must provide data to create a user" });
+      res.status(400).json({
+          error: 'You must provide information to sign up.',
+      });
       return;
-    };
+    }
   
-    if (!userInfo.firstName) {
-      res.status(400).json({ error: "You must provide a first name" });
-      return;
-    };
-  
-    if (!userInfo.lastName) {
-      res.status(400).json({ error: "You must provide a last name" });
-      return;
-    };
-
-    if (!userInfo.email) {
-        res.status(400).json({ error: "You must provide an email" });
-        return;
-    };
-
-    if (!userInfo.passwordHash) {
-        res.status(400).json({ error: "You must provide a password" });
-        return;
-    };
-
-    if (!userInfo.username) {
-        res.status(400).json({ error: "You must provide a user name" });
-        return;
-    };
-
-  
-    userData.addUser(userInfo.firstName, userInfo.lastName, userInfo.email, 
-        userInfo.passwordHash, userInfo.username, userInfo.description, 
-        userInfo.created=[], userInfo.participant=[]).then(
-      newUser => {
-        res.json(newUser);
-      },
-      () => {
-        res.sendStatus(500);
-      }
-    );
+    try {
+      const newUser = await userData.addUser(
+        userInfo.firstName, 
+        userInfo.lastName, 
+        userInfo.email, 
+        userInfo.passwordHash, 
+        userInfo.username, 
+        userInfo.description, 
+        userInfo.created=[], 
+        userInfo.participant=[]
+      );
+      res.json(newUser);
+    } catch (error) {
+      res.status(500).json({ error: error });
+    }
 });
 
 router.put("/:id", (req, res) => {

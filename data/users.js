@@ -5,13 +5,13 @@ const { ObjectId } = require('mongodb');
 const xss = require('xss');
 
 module.exports = {
-    async addUser(firstName, lastName, email, passwordHash, username, description, created=[], participant=[]) {
-    if(!firstName || typeof firstName!= 'string') throw 'you must provide a valid first name';
-    if(!lastName || typeof lastName!= 'string') throw 'you must provide a valid last name';
-    if(!email || typeof email!= 'string') throw 'you must provide a valid email';
-    if(!passwordHash || typeof passwordHash!= 'string') throw 'you must provide a valid password hash';
-    if(!username || typeof username!= 'string') throw 'you must provide a valid username';
-    if(!description || typeof description!='string') throw 'you must provide a valid description';
+    async addUser(firstName, lastName, email, passwordHash, username, description) {
+        if(!firstName || typeof firstName!= 'string') throw 'you must provide a valid first name';
+        if(!lastName || typeof lastName!= 'string') throw 'you must provide a valid last name';
+        if(!email || typeof email!= 'string') throw 'you must provide a valid email';
+        if(!passwordHash || typeof passwordHash!= 'string') throw 'you must provide a valid password hash';
+        if(!username || typeof username!= 'string') throw 'you must provide a valid username';
+        if(!description || typeof description!='string') throw 'you must provide a valid description';
 
         const usersCollection = await users();
         let newUser = {
@@ -21,8 +21,8 @@ module.exports = {
         passwordHash: xss(passwordHash),
         username: xss(username),
         description: xss(description),
-        created: xss(created),
-        participant: xss(participant)
+        created: [],
+        participant: []
         };
         const insertInfo = await usersCollection.insertOne(newUser);
         if (insertInfo.insertedCount === 0) throw 'Could not add user';
@@ -98,7 +98,9 @@ module.exports = {
         if(!projectId) throw 'You must provide a project Id';
 
         const usersCollection = await users();
-        const updateInfo = await usersCollection.updateOne({_id: xss(userId)},{$push: {created: xss(projectId)}});
+        if(typeof(userId) === 'string')
+            userId = ObjectId(userId);
+        const updateInfo = await usersCollection.updateOne({_id: userId}, {$push: {created: xss(projectId)}});
         if (updateInfo.modifiedCount === 0)
             throw 'Could not add the project to the user';
 
@@ -116,7 +118,7 @@ module.exports = {
             //projectId = ObjectId(projectId);
 
         const usersCollection = await users();
-        const updateInfo = await usersCollection.updateOne({_id: xss(userId)},{$push: {participant: xss(projectId)}});
+        const updateInfo = await usersCollection.updateOne({_id: userId},{$push: {participant: xss(projectId)}});
         if (updateInfo.modifiedCount === 0)
             throw 'Could not add the project to the user';
 

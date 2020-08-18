@@ -9,18 +9,33 @@ const saltRounds = 16;
 const { ObjectId } = require('mongodb');
 
 router.get("/",async (req,res) => {
-    if(req.session.user){
-        console.log(req.session.userid)
-        let user_projects = await projects.getProjectsByUser(req.session.userid);
-        console.log(user_projects);
-        let user = await users.getUser(req.session.userid);
-        let teamProjectsArr = user.participant;
-        let teamProjects = await projects.getProjectsByArray(teamProjectsArr);
-        console.log(teamProjects)
-        res.render("projects",{CreatedProjects: user_projects, TeamProjects: teamProjects });
-        return;
+    try{
+        if(req.session.userid){
+            console.log(req.session.userid)
+            
+            // let user_projects = await projects.getProjectsByUser(req.session.userid);
+            // console.log(user_projects);
+            let user = await users.getUser(req.session.userid);
+            let user_projects = await projects.getProjectsByUser(req.session.userid);
+            let teamProjects = [];
+
+            if(user_projects.length){
+                // user_projects = await projects.getProjectsByUser(req.session.userid);
+                console.log(user_projects);
+            }
+            let teamProjectsArr = user.participant;
+            if(teamProjectsArr.length){
+                teamProjects = await projects.getProjectsByArray(teamProjectsArr);
+            }
+            console.log(teamProjects)
+            res.render("projects",{CreatedCount: user_projects.length, ParticipatedCount: teamProjectsArr.length,CreatedProjects: user_projects, TeamProjects: teamProjects });
+            // return;
+        }else{
+            res.render("login");
+        }
+    }catch(error){
+        res.status(500).json({ error: error });
     }
-    res.render("login");
 });
 
 router.get('/:id', async (req, res) => {

@@ -36,6 +36,7 @@ router.post("/", async (req, res) => {
         return;
     }
     let newProject = await projects.createProject(title,description,ObjectId(req.session.userid), d, '0', teamMembersObjectArray, []);
+    await users.addCreatedProjectToUser(ObjectId(req.session.userid),newProject._id)
     for(x of teamMembersObjectArray){
         await users.addPartipantProjectToUser(x,newProject._id);
     }

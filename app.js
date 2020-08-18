@@ -26,7 +26,7 @@ let directToSignIn = (req, res, next) => {
         next();
     }
     else{
-        res.redirect("login");
+        res.render("login",{ layout: false });
     }
 };
 
