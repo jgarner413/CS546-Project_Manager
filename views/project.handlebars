@@ -1,31 +1,33 @@
 <form method="POST" action="/projects/deleteproject/{{Project._id}}">
-    <input type="submit" value="&#10006;"/>
+    <input type="submit" value="&#10006;" />
 </form>
 <h2>{{Project.title}}</h2>
 <p>{{Project.description}}</p>
 <p>Owner: {{Project.creator}}</p>
-<p>Deadline: {{Project.deadline}}</p>
-<p>Time worked on project: {{Project.time}}</p>
+<p label="deadline" id="deadline">Deadline: {{Project.deadline}}</p>
+<p>Time worked on project: {{Time}} minutes</p>
 <p>Members: {{Project.members}}</p>
 <a href="/projects/edit/{{Project._id}}">Edit Project</a>
 <br>
 <a href="/tasks/{{Project._id}}">Add Task</a>
 <div class="row">
-<h3>Tasks</h3>
-{{#each Tasks}}
-    <div class="column1">
+    <h3>Tasks</h3>
+    {{#each Tasks}}
+    <div class="tasks">
         <div class="task">
             <div class="removetask">
-            <form method="POST" action="/tasks/deletetask/{{_id}}">
-            <input id="removetask" type="submit" value="&#10006;"/>
-            </form>
+                <form method="POST" action="/tasks/deletetask/{{_id}}">
+                    <input id="removetask" type="submit" value="&#10006;" />
+                </form>
             </div>
             <h3>{{title}}</h3>
             <p>{{description}}</p>
             <p>deadline: {{deadline}}</p>
             <p>Assigned to: {{assignedTo}}</p>
-            <a href= "/tasks/edit/{{_id}}">Edit Task</a>
+            <p class="timespent">Time Spent: {{timespent}} minutes</p>
+            <a href="/tasks/edit/{{_id}}">Edit Task</a>
         </div>
+        <br>
     </div>
-{{/each}}
+    {{/each}}
 </div>

@@ -45,6 +45,7 @@ router.post('/editTask', async (req, res) => {
     let user_list = await users.getAllUsers();
     let title = req.body.title;
     let taskid = req.body.taskid;
+    let timespent = req.body.timespent
     let deadline = req.body.deadline;
     let assignedTo = req.body.assignedTo;
     let d = new Date(deadline)
@@ -55,7 +56,7 @@ router.post('/editTask', async (req, res) => {
         return;
     }
     
-    let newProject = await tasks.updateTask(taskid, title, task.timespent, d, assignedTo)
+    let newProject = await tasks.updateTask(taskid, title, timespent, d, assignedTo)
     res.redirect("/projects/" + task.project_id);
 
 });
