@@ -62,7 +62,7 @@ module.exports = {
         if (!title) throw 'You must provide a title for your project';
         if (!description) throw 'You must provide a description for your project';
         if (!deadline) throw 'You must provide a deadline for your project';
-        if (!teammembers) throw 'You must provide a deadline for your project';
+        // if (!teammembers) throw 'You must provide a deadline for your project';
 
 
 

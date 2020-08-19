@@ -15,33 +15,44 @@ router.get("/",async (req,res) => {
         res.render("addProjects",{userList: user_list});
         return;
     }
-    res.render("login");
+    res.render("login",{layout:false});
 });
 
 router.post("/", async (req, res) => {
     let user_list = await users.getAllUsers();
     let title = req.body.title;
-    let description = req.body.description
-    let deadline = req.body.deadline
-    let teammembers = req.body.teammembers
-    let d = new Date(deadline)
+    let description = req.body.description;
+    let deadline = req.body.deadline;
+    let teammembers = req.body.teammembers;
+    let d = new Date(deadline);
     
     console.log(title);
     console.log(description);
     console.log(d);
     console.log(teammembers);
     
-    if (!title || !description || !d || !teammembers){
+    if (!title || !description || !d){
         res.status(401).render("addProjects", {error: true, userList: user_list });
         return;
     }
-    const teamMembersObjectArray = teammembers.map(x => ObjectId(x));
+    const teamMembersObjectArray = [];
+    
+    if(teammembers){
+        if(Array.isArray(teammembers)){
+            teamMembersObjectArray = teammembers.map(x => ObjectId(x));
+        }else{
+            teamMembersObjectArray.push(ObjectId(teammembers));
+        }
+        
+    }
     let newProject = await projects.createProject(title,description,ObjectId(req.session.userid), d, '0', teamMembersObjectArray, []);
     await users.addCreatedProjectToUser(ObjectId(req.session.userid),newProject._id)
-    for(x of teamMembersObjectArray){
-        await users.addPartipantProjectToUser(x,newProject._id);
+    if(teammembers){
+        for(x of teamMembersObjectArray){
+            await users.addPartipantProjectToUser(x,newProject._id);
+        }
     }
-    res.redirect('projects');
+    res.redirect("projects");
 });
 
 module.exports = router;
