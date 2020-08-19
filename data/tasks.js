@@ -12,7 +12,7 @@ module.exports = {
         if(!title || typeof title!= 'string') throw 'you must provide a valid title';
         if(!project_id || typeof project_id!= 'object') throw 'you must provide a valid project id';
         if(!assignedTo || typeof assignedTo!= 'object') throw 'you must provide a valid assigner';
-        if(!timespent || typeof timespent!= 'string') throw 'you must provide a valid time';
+        //if(!timespent || typeof timespent!= 'string') throw 'you must provide a valid time';
         //if(!deadline || typeof deadline != 'Date') throw 'you must provide a valid time';
         //moment("06/22/2015", "MM/DD/YYYY", true).isValid(); true
         //may need moment.js package
@@ -22,7 +22,7 @@ module.exports = {
             title: xss(title),
             project_id: project_id,
             deadline: xss(deadline),
-            timespent: xss(timespent),
+            timespent: '00:00:00',
             assignedTo: xss(assignedTo),
         }
         const insertInfo = await tasksCollection.insertOne(newTask);
@@ -57,7 +57,7 @@ module.exports = {
         if(!title || typeof title!= 'string') throw 'you must provide a valid title';
         //if(!project_id || typeof project_id!= 'object') throw 'you must provide a valid project id';
         if(!assigned_To || typeof assigned_To!= 'object') throw 'you must provide a valid assigner';
-        if(!timespent || typeof timespent!= 'string') throw 'you must provide a valid time';
+        //if(!timespent || typeof timespent!= 'string') throw 'you must provide a valid time';
 
 
         const tasksCollection = await tasks();
@@ -67,6 +67,35 @@ module.exports = {
             throw 'Could not update project successfully';
         }
 
+        return await this.getTask(task_Id);
+    },
+
+    async updateTime(taskId, newTime) {
+        let task_Id = ObjectId(taskId);
+        const tasksCollection = await tasks();
+        const task = await this.getTask(taskId);
+        var time1 = task.timespent;
+        var time2 = newTime;
+        
+        var hour=0;
+        var minute=0;
+        var second=0;
+        
+        var splitTime1= time1.split(':');
+        var splitTime2= time2.split(':');
+        
+        hour = parseInt(splitTime1[0])+parseInt(splitTime2[0]);
+        minute = parseInt(splitTime1[1])+parseInt(splitTime2[1]);
+        hour = hour + minute/60;
+        minute = minute%60;
+        second = parseInt(splitTime1[2])+parseInt(splitTime2[2]);
+        minute = minute + second/60;
+        second = second%60;
+        var newTimeSpent = toString(hour)+':'+toString(minute)+':'+toString(second);
+        const updatedInfo = await tasksCollection.updateOne({ _id: task_Id }, { $set: {timespent: xss(newTimeSpent)}});
+        if (updatedInfo.modifiedCount === 0) {
+            throw 'Update time failed';
+        }
         return await this.getTask(task_Id);
     },
     
