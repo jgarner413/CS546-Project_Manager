@@ -2,6 +2,7 @@ const mongoCollections = require('../config/mongoCollections');
 const projects = mongoCollections.projects;
 const users = mongoCollections.users;
 const tasks = mongoCollections.tasks;
+const usersDat = require('./users');
 const { ObjectId } = require('mongodb');
 const xss = require('xss');
 
@@ -16,6 +17,7 @@ module.exports = {
         //if(!deadline || typeof deadline != 'Date') throw 'you must provide a valid time';
         //moment("06/22/2015", "MM/DD/YYYY", true).isValid(); true
         //may need moment.js package
+        let user = await usersDat.getUser(assignedTo);
         project_id = ObjectId(projectID);
         const tasksCollection = await tasks();
         let newTask = {
@@ -23,7 +25,8 @@ module.exports = {
             project_id: project_id,
             deadline: xss(deadline),
             timespent: '00:00:00',
-            assignedTo: xss(assignedTo),
+            assignedTo: assignedTo,
+            name: user.firstName + " " + user.lastName
         }
         const insertInfo = await tasksCollection.insertOne(newTask);
         if (insertInfo.insertedCount === 0) throw 'Could not add task';
