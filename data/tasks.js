@@ -62,7 +62,7 @@ module.exports = {
 
         const tasksCollection = await tasks();
         const updatedInfo = await tasksCollection.updateOne({ _id: task_Id }, { $set: {title: xss(title), timespent: xss(timespent),
-            deadline: xss(deadline), assignedTo: xss(assigned_To)}});
+            deadline: xss(deadline), assignedTo: assigned_To}});
         if (updatedInfo.modifiedCount === 0) {
             throw 'Could not update project successfully';
         }

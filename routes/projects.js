@@ -41,7 +41,14 @@ router.get("/",async (req,res) => {
 router.get('/:id', async (req, res) => {
     let project = await projects.getProject(req.params.id);
     let projectTasks = await tasks.getTaskByProjectID(req.params.id);
-    res.render('project', {Project: project, Tasks: projectTasks});
+    let totalTime = 0;
+    for(task of projectTasks){ 
+        let tempTime = task.timespent;
+        let integerTime = parseInt(tempTime, 10);
+        totalTime += integerTime
+    }
+    let stringTime = totalTime.toString();
+    res.render('project', {Project: project, Tasks: projectTasks, Time: stringTime});
 
 });
 
