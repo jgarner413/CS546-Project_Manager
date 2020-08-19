@@ -3,10 +3,10 @@
 </form>
 <h2>{{Project.title}}</h2>
 <p>{{Project.description}}</p>
-<p>Owner: {{Project.creator}}</p>
+<p>Owner: {{Creator.firstName}} {{Creator.lastName}}</p>
 <p label="deadline" id="deadline">Deadline: {{Project.deadline}}</p>
 <p>Time worked on project: {{Time}} minutes</p>
-<p>Members: {{Project.members}}</p>
+<p>Members:{{TeamMembers}}</p>
 <a href="/projects/edit/{{Project._id}}">Edit Project</a>
 <br>
 <a href="/tasks/{{Project._id}}">Add Task</a>

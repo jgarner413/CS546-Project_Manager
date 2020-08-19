@@ -40,7 +40,15 @@ router.get("/",async (req,res) => {
 
 router.get('/:id', async (req, res) => {
     let project = await projects.getProject(req.params.id);
+    let project_members = project.members
+    let name_list = []
+    for(id of project_members){
+        let member = await users.getUser(id)
+        let full_Name = " " + member.firstName + " " + member.lastName;
+        name_list.push(full_Name);
+    }
     let projectTasks = await tasks.getTaskByProjectID(req.params.id);
+    let creator = await users.getUser(project.creator)
     let totalTime = 0;
     for(task of projectTasks){ 
         let tempTime = task.timespent;
@@ -48,7 +56,7 @@ router.get('/:id', async (req, res) => {
         totalTime += integerTime
     }
     let stringTime = totalTime.toString();
-    res.render('project', {Project: project, Tasks: projectTasks, Time: stringTime});
+    res.render('project', {Project: project, Tasks: projectTasks, Time: stringTime, Creator: creator, TeamMembers: name_list});
 
 });
 
