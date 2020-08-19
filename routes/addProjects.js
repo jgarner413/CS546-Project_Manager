@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
         res.status(401).render("addProjects", {error: true, userList: user_list });
         return;
     }
-    const teamMembersObjectArray = [];
+    let teamMembersObjectArray = [];
     
     if(teammembers){
         if(Array.isArray(teammembers)){
