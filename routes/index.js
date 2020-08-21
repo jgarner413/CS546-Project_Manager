@@ -5,6 +5,7 @@ const registerRoutes = require("./register")
 const projectRoutes = require("./projects")
 const addProjectRoutes = require("./addProjects")
 const taskRoutes = require("./tasks")
+const inviteRoutes = require("./invite")
 const path = require("path");
 
 const constructorMethod = app => {
@@ -15,6 +16,7 @@ const constructorMethod = app => {
   app.use("/projects", projectRoutes);
   app.use("/addProjects", addProjectRoutes);
   app.use("/tasks", taskRoutes);
+  app.use("/invite", inviteRoutes);
 
   app.use("*", (req, res) => {
     res.redirect("/profile");

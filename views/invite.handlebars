@@ -1,0 +1,12 @@
+ <h2>Invite a user to join your projects!</h2>
+ <br>
+ <form id="login-form" method="POST" action="/invite">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name">
+        <label for="email">Email: </label>
+        <input type="text" name="email" id="email">
+        <button type="Submit" value="Submit">Submit</button>
+        {{#if Response}}
+            <p class="respone">{{Response}}</p>
+        {{/if}}
+ </form>
