@@ -42,21 +42,30 @@ router.get('/:id', async (req, res) => {
     let project = await projects.getProject(req.params.id);
     let project_members = project.members
     let name_list = []
+    let taskTime = [];
     for(id of project_members){
         let member = await users.getUser(id)
         let full_Name = " " + member.firstName + " " + member.lastName;
         name_list.push(full_Name);
     }
     let projectTasks = await tasks.getTaskByProjectID(req.params.id);
-    let creator = await users.getUser(project.creator)
-    let totalTime = 0;
-    for(task of projectTasks){ 
-        let tempTime = task.timespent;
-        let integerTime = parseInt(tempTime, 10);
-        totalTime += integerTime
+    let creator = await users.getUser(project.creator);
+    let allTasks = project.tasks;
+    for(id of allTasks){
+        let task = await tasks.getTask(id);
+        taskTime.push(task.timespent);
     }
-    let stringTime = totalTime.toString();
-    res.render('project', {Project: project, Tasks: projectTasks, Time: stringTime, Creator: creator, TeamMembers: name_list});
+    // let totalTime = project.time;
+    // for(task of projectTasks){ 
+    //     let tempTime = task.timespent;
+    //     let integerTime = parseInt(tempTime, 10);
+    //     totalTime += integerTime
+    // }
+    // let stringTime = totalTime.toString();
+    // let second = project.time%60;
+    // let minute = project.time%3600;
+    // let hour = Math.floor(project.time/3600);
+    res.render('project', {Project: project, Tasks: projectTasks, taskTime: taskTime, Creator: creator, TeamMembers: name_list});
 
 });
 

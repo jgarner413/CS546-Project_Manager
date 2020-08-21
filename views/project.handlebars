@@ -5,7 +5,7 @@
 <p>{{Project.description}}</p>
 <p>Owner: {{Creator.firstName}} {{Creator.lastName}}</p>
 <p label="deadline" id="deadline">Deadline: {{Project.deadline}}</p>
-<p>Time worked on project: {{Time}} minutes</p>
+<p id="projecttime">Time worked on project: {{hour Project.time}} hour {{minute Project.time}} minute {{second Project.time}} second</p>
 <p>Members:{{TeamMembers}}</p>
 <a href="/projects/edit/{{Project._id}}">Edit Project</a>
 <br>
@@ -24,7 +24,8 @@
             <p>{{description}}</p>
             <p>deadline: {{deadline}}</p>
             <p>Assigned to: {{name}}</p>
-            <p class="timespent">Time Spent: {{timespent}} minutes</p>
+            <p>Time worked on task: {{hour timespent}} hour {{minute timespent}} minute {{second timespent}} second
+            </p>
             <a href="/tasks/edit/{{_id}}">Edit Task</a>
             <a href="/tasks/start/{{_id}}">Start</a>
         </div>
@@ -32,3 +33,4 @@
     </div>
     {{/each}}
 </div>
+

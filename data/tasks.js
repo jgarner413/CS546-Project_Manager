@@ -24,13 +24,15 @@ module.exports = {
             title: xss(title),
             project_id: project_id,
             deadline: xss(deadline),
-            timespent: '00:00:00',
+            timespent: 0,
             assignedTo: assignedTo,
             name: user.firstName + " " + user.lastName
         }
         const insertInfo = await tasksCollection.insertOne(newTask);
         if (insertInfo.insertedCount === 0) throw 'Could not add task';
         const newId = insertInfo.insertedId;
+        const projectsCollection = await projects();
+        const addToProject = await projectsCollection.updateOne({_id: project_id}, {$push: {tasks: xss(newId)}});
         return await this.getTask(newId);
     },
 
@@ -77,29 +79,14 @@ module.exports = {
         let task_Id = ObjectId(taskId);
         const tasksCollection = await tasks();
         const task = await this.getTask(taskId);
-        var time1 = task.timespent;
-        var time2 = newTime;
         
-        var hour=0;
-        var minute=0;
-        var second=0;
-        
-        var splitTime1= time1.split(':');
-        var splitTime2= time2.split(':');
-        
-        hour = parseInt(splitTime1[0])+parseInt(splitTime2[0]);
-        minute = parseInt(splitTime1[1])+parseInt(splitTime2[1]);
-        hour = hour + minute/60;
-        minute = minute%60;
-        second = parseInt(splitTime1[2])+parseInt(splitTime2[2]);
-        minute = minute + second/60;
-        second = second%60;
-        var newTimeSpent = toString(hour)+':'+toString(minute)+':'+toString(second);
+        const parsedNewTime = newTime.split(':');
+        const newTimeSpent = task.timespent + parseInt(parsedNewTime[0])*3600 + parseInt(parsedNewTime[1])*60 + parseInt(parsedNewTime[2]);
         const updatedInfo = await tasksCollection.updateOne({ _id: task_Id }, { $set: {timespent: xss(newTimeSpent)}});
         if (updatedInfo.modifiedCount === 0) {
             throw 'Update time failed';
         }
-        return await this.getTask(task_Id);
+        return newTimeSpent;
     },
     
     async removeTask(id) {

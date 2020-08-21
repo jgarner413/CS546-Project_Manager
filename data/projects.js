@@ -9,7 +9,7 @@ module.exports = {
         if(!title || typeof title!= 'string') throw 'you must provide a valid title';
         if(!description || typeof description!= 'string') throw 'you must provide a valid description';
         if(!creator) throw 'you must provide a valid creator id';
-        if(!time || typeof time!= 'string') throw 'you must provide a valid time';
+        //if(!time || typeof time!= 'string') throw 'you must provide a valid time';
         //if(!deadline || typeof deadline != 'Date') throw 'you must provide a valid time';
         //moment("06/22/2015", "MM/DD/YYYY", true).isValid(); true
         //may need moment.js package
@@ -21,8 +21,8 @@ module.exports = {
             creator: creator,
             members: members,
             deadline: deadline,
-            time: xss(time),
-            tasks: tasks
+            time: 0,
+            tasks: []
         }
         const insertInfo = await projectsCollection.insertOne(newProject);
         if (insertInfo.insertedCount === 0) throw 'Could not add project';
@@ -40,7 +40,10 @@ module.exports = {
     async getProject(id) {
         if (!id) throw 'You must provide a user id to search for';
 
-        const objId = ObjectId(id);
+        let objId = id;
+        if(typeof id == 'string'){
+            objId = ObjectId(id);
+        }
         const projectsCollection = await projects();
         const project = await projectsCollection.findOne({ _id: objId });
         if (project === null) throw 'No user with this id';
@@ -75,6 +78,17 @@ module.exports = {
         }
 
         return await this.getProject(projectId);
+    },
+    async updateTime(id, newTime) {
+        let project_id = ObjectId(id);
+        const projectsCollection = await projects();
+        const project = await this.getProject(project_id);
+        const newTimeSpent = project.time + newTime;
+        const updatedInfo = await projectsCollection.updateOne({ _id: project_id }, { $set: {time: xss(newTimeSpent)}});
+        if (updatedInfo.modifiedCount === 0) {
+            throw 'Update time failed';
+        }
+        return newTimeSpent;
     },
 
     async getProjectsByArray(projectArray){

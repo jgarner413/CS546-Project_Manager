@@ -4,7 +4,16 @@
 
 <h1 id="stopwatch"><time>00:00:00</time></h1>
 
-<button id="stop">stop</button>
+{{!-- <button id="stop">stop</button> --}}
+{{!-- <a href="/tasks/updateTime/{{_id}}" id="stop">Stop</a> --}}
+
+<form id="time_change" method="POST" action="/tasks/updateTime">
+    <input type="hidden" id="taskid" name="taskid" value="{{task._id}}">
+    <input type="hidden" id="projectid" name="projectid" value="{{project._id}}">
+    <input type="hidden" id="newtime" name="newtime">
+    <button type="Submit" id="stop" value="Submit">Stop</button>
+
+</form>
 
 
 <script language="javascript">
@@ -13,6 +22,7 @@
         stop = document.getElementById('stop'),
         clear = document.getElementById('clear'),
         seconds = 0,hours = 0, minutes = 0,
+        newTime = document.getElementById('newtime'),
         t;
 
     function tic() {
@@ -28,7 +38,7 @@
         time.textContent = String(hours).padStart(2, '0') + ":" 
                             + String(minutes).padStart(2, '0') + ":" 
                             + String(seconds).padStart(2, '0');
-        
+        newTime.value = time.textContent;
         timer();
     }
     function timer() {
@@ -38,7 +48,6 @@
 
     stop.onclick = function() {
         clearTimeout(t);
-        //document.getElementById("newTime").value = time.textContent;
     }
 
 </script>

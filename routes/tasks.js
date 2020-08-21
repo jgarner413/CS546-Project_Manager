@@ -9,11 +9,15 @@ const saltRounds = 16;
 const { ObjectId } = require('mongodb');
 
 router.get("/:id",async (req,res) => {
-    console.log("HERE!!!")
-    let user_list = await users.getAllUsers();
-    let project = await projects.getProject(req.params.id);
-    console.log(user_list);
-    res.render("addTask",{Project: project, userList: user_list});
+    try{
+        console.log("HERE!!!")
+        let user_list = await users.getAllUsers();
+        let project = await projects.getProject(req.params.id);
+        console.log(user_list);
+        res.render("addTask",{Project: project, userList: user_list});
+    }catch(error){
+        console.log(error);
+    }
 });
 
 router.post("/addtask", async (req, res) => {
@@ -61,28 +65,17 @@ router.post('/editTask', async (req, res) => {
 
 });
 
-router.get('/updateTime', async (req, res) => {
-    // console.log('here')
-    // let user_list = await users.getAllUsers();
-    // let title = req.body.title;
-    // let taskid = req.body.taskid;
-    // let timespent = req.body.timespent
-    // let deadline = req.body.deadline;
-    // let assignedTo = req.body.assignedTo;
-    // let d = new Date(deadline)
-    // assignedTo = ObjectId(assignedTo);
-    // let task = await tasks.getTask(taskid);
-    // if (!title || !deadline || !d || !assignedTo){
-    //     res.status(401).render("editTask", {error: true, Task: task, userList: user_list });
-    //     return;
-    // }
-    
-    // let newProject = await tasks.updateTask(taskid, title, timespent, d, assignedTo)
+router.post('/updateTime', async (req, res) => {
     let taskid = req.body.taskid;
-    let newTime = req.body.newTime; 
-    let task = await tasks.getTask(taskid);
-    await tasks.updateTime(taskid,newTime);
-    res.redirect("/projects/" + task.project_id);
+    let newTime = req.body.newtime; 
+    let projectid = req.body.projectid;
+    // console.log(newTime);
+    // console.log(taskid);
+    //let projectid = req.body.projectid;
+    // let task = await tasks.getTask(taskid);
+    const taskTime = await tasks.updateTime(taskid,newTime);
+    await projects.updateTime(projectid,taskTime);
+    res.redirect("/projects/" + projectid);
 
 });
 

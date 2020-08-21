@@ -19,6 +19,16 @@ app.use(session({
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
+var hbs = exphbs.create({});
+hbs.handlebars.registerHelper('hour', function(sec) {
+  return Math.floor(sec/3600);
+});
+hbs.handlebars.registerHelper('minute', function(sec) {
+  return Math.floor((sec%3600)/60);
+});
+hbs.handlebars.registerHelper('second', function(sec) {
+  return sec%60;
+});
 
 
 let directToSignIn = (req, res, next) => {
