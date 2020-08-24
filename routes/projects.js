@@ -102,7 +102,7 @@ router.post('/editProject', async (req, res) => {
         return;
     }
     // console.log(teammembers);
-    const teamMembersObjectArray = [];
+    let teamMembersObjectArray = [];
     if(Array.isArray(teammembers)){
         teamMembersObjectArray = teammembers.map(x => ObjectId(x));
     }else{

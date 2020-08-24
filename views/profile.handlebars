@@ -20,7 +20,7 @@
                 <p>{{description}}</p>
                 <p>deadline: {{deadline}}</p>
                 <p>Assigned to: {{name}}</p>
-                <p>Time Spent: {{timespent}} minutes</p>
+                <p>Time worked on task: {{hour timespent}} hour {{minute timespent}} minute {{second timespent}} second</p>
                 <a href= "/tasks/edit/{{_id}}">Edit Task</a>
                 <a href="/tasks/start/{{_id}}">Start</a>
             </div>
