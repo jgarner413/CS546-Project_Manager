@@ -6,20 +6,20 @@
     <label for="description">description:</label>
     <input type="text" name="description" id="description" value="{{Project.description}}">
     <label for="deadline">Deadline:</label>
-    <input type="date" id="deadline" name="deadline"
-       value="{{Project.deadline}}"
-       min="2020-01-01" max="2021-12-31">
+    {{!-- <input type="date" id="deadline" name="deadline" value="{{Project.deadline}}" min="2020-01-01" max="2021-12-31">
+    <input type="time" id="duetime" name="duetime" value="00:00"> --}}
+    <input type="datetime-local" id="deadline" name="deadline" value="2020-08-22T00:00" />
     <label for="teammembers">Choose your team members:</label>
-        <select name="teammembers" id="teammembers" multiple>
-            {{#each userList}}
-                <option value={{_id}}>{{firstName}} {{lastName}}</option>
-            {{/each}}
+    <select name="teammembers" id="teammembers" multiple>
+        {{#each userList}}
+        <option value={{_id}}>{{firstName}} {{lastName}}</option>
+        {{/each}}
 
     </select>
     <input type="hidden" id="projectid" name="projectid" value="{{Project._id}}">
     <button type="Submit" value="Submit">Submit</button>
     {{#if error}}
-        <p class="error">Please complete all fields</p>
+    <p class="error">Please complete all fields</p>
     {{/if}}
 
 </form>

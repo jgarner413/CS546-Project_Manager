@@ -11,8 +11,19 @@ const { ObjectId } = require('mongodb');
 router.get("/:id",async (req,res) => {
     try{
         console.log("HERE!!!")
-        let user_list = await users.getAllUsers();
+        // let user_list = await users.getAllUsers();
         let project = await projects.getProject(req.params.id);
+        let user_list = [await users.getUser(project.creator)];
+        let members = project.members;
+        
+        console.log('-----------------------------------------')
+        // console.log(members)
+        let user;
+        for(var i = 0; i < members.length; i++){
+            console.log(members[i])
+            user = await users.getUser(members[i]);
+            user_list.push(user);
+        }
         console.log(user_list);
         res.render("addTask",{Project: project, userList: user_list});
     }catch(error){
@@ -24,11 +35,12 @@ router.post("/addtask", async (req, res) => {
     let user_list = await users.getAllUsers();
     let title = req.body.title;
     let projectid = req.body.projectid;
-    let deadline = req.body.deadline;
+    let deadline = new Date(req.body.deadline);
     let assignedTo = req.body.assignedTo;
+    // let duetime = req.body.duetime;
     let d = new Date(deadline);
     if (!title || !projectid || !d || !assignedTo){
-        res.status(401).render("addProjects", {error: true, userList: user_list });
+        res.status(401).render("addTask", {error: true, userList: user_list });
         return;
     }
     let newTask = await tasks.createTask(title,projectid, deadline, "0", assignedTo);
@@ -37,8 +49,17 @@ router.post("/addtask", async (req, res) => {
 
 router.get('/edit/:id', async (req, res) => {
     console.log(req.params.id);
-    let user_list = await users.getAllUsers();
+    // let user_list = await users.getAllUsers();
     let task = await tasks.getTask(req.params.id);
+    let project = await projects.getProject(task.project_id);
+    let creator = [project.creator];
+    let userids = creator.concat(project.members);
+    let user_list = [];
+    let user;
+    for (var i = 0; i < userids.length; i++){
+        user = await users.getUser(userids[i]);
+        user_list.push(user);
+    }
     //let projectTasks = await tasks.getTaskByProjectID(req.params.id);
     res.render('editTask', {Task: task, userList: user_list});
 
@@ -52,7 +73,8 @@ router.post('/editTask', async (req, res) => {
     let timespent = req.body.timespent
     let deadline = req.body.deadline;
     let assignedTo = req.body.assignedTo;
-    let d = new Date(deadline)
+    // let duetime = req.body.duetime;
+    let d = new Date(deadline);
     assignedTo = ObjectId(assignedTo);
     let task = await tasks.getTask(taskid);
     if (!title || !deadline || !d || !assignedTo){

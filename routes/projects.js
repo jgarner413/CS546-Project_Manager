@@ -89,7 +89,8 @@ router.post('/editProject', async (req, res) => {
     let teammembers = req.body.teammembers
     let project_id = req.body.projectid
     let project = await projects.getProject(project_id);
-    let d = new Date(deadline)
+    // let duetime = req.body.duetime;
+    let d = new Date(deadline);
 
     
     // if (!title || !description || !d || !teammembers){
