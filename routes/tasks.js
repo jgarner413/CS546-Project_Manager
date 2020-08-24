@@ -74,19 +74,21 @@ router.post('/updateTime', async (req, res) => {
     //let projectid = req.body.projectid;
     // let task = await tasks.getTask(taskid);
     const taskTime = await tasks.updateTime(taskid,newTime);
-    await projects.updateTime(projectid,taskTime);
+    await projects.updateTime(projectid,newTime);
     res.redirect("/projects/" + projectid);
 
 });
 
 router.post('/deletetask/:id', async (req, res) => {
     try {
-        var task = await tasks.getTask(req.params.id)
+        // console.log(req.params)
+        var task = await tasks.getTask(req.params.id);
+        const projectId = task.project_id
         await tasks.removeTask(req.params.id);
+        res.redirect("/projects/" + projectId);
     } catch (error) {
         console.log(error)
     }
-    res.redirect("/projects/" + task.project_id);
 });
 
 router.get('/start/:id', async (req, res) => {

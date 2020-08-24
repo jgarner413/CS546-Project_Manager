@@ -13,13 +13,18 @@
 <div class="row">
     <h3>Tasks</h3>
     {{#each Tasks}}
-    <div class="tasks">
-        <div class="task">
-            <div class="removetask">
+    {{!-- <div class="tasks" id="tasks">
+        
+    </div> --}}
+    <div class="task" id="{{_id}}">
+            {{!-- <div class="removetask">
                 <form method="POST" action="/tasks/deletetask/{{_id}}">
                     <input id="removetask" type="submit" value="&#10006;" />
                 </form>
-            </div>
+            </div> --}}
+            {{!-- <button type="button" value="&#10006" id="removetask" data-id="{{_id}}"></button> --}}
+            {{!-- <input class="removetask" type="submit" onClick="remove(this)" data-id="{{_id}}" value="&#10006;"/> --}}
+            <button type="button" class="removetask" data-id="{{_id}}">×</button>
             <h3>{{title}}</h3>
             <p>{{description}}</p>
             <p>deadline: {{deadline}}</p>
@@ -30,7 +35,12 @@
             <a href="/tasks/start/{{_id}}">Start</a>
         </div>
         <br>
-    </div>
     {{/each}}
 </div>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+    crossorigin="anonymous"></script>
+<script src="/public/js/project.js"></script>
+
 

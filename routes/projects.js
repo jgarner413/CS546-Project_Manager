@@ -16,19 +16,21 @@ router.get("/",async (req,res) => {
             // let user_projects = await projects.getProjectsByUser(req.session.userid);
             // console.log(user_projects);
             let user = await users.getUser(req.session.userid);
-            let user_projects = await projects.getProjectsByUser(req.session.userid);
+            let user_projects = [];
             let teamProjects = [];
+            let userProjectArr = user.created;
 
-            if(user_projects.length){
+            if(userProjectArr.length){
                 // user_projects = await projects.getProjectsByUser(req.session.userid);
-                console.log(user_projects);
+                // console.log(user_projects);
+                user_projects = await projects.getProjectsByUser(req.session.userid);
             }
             let teamProjectsArr = user.participant;
             if(teamProjectsArr.length){
                 teamProjects = await projects.getProjectsByArray(teamProjectsArr);
             }
-            console.log(teamProjects)
-            res.render("projects",{CreatedCount: user_projects.length, ParticipatedCount: teamProjectsArr.length,CreatedProjects: user_projects, TeamProjects: teamProjects });
+            // console.log(teamProjects)
+            res.render("projects",{CreatedCount: userProjectArr.length, ParticipatedCount: teamProjectsArr.length,CreatedProjects: user_projects, TeamProjects: teamProjects });
             // return;
         }else{
             res.render("login");
@@ -90,12 +92,22 @@ router.post('/editProject', async (req, res) => {
     let d = new Date(deadline)
 
     
-    if (!title || !description || !d || !teammembers){
+    // if (!title || !description || !d || !teammembers){
+    //     res.status(401).render("editProject", {error: true, Project: project, userList: user_list });
+    //     return;
+    // }
+    if (!title || !description || !d){
         res.status(401).render("editProject", {error: true, Project: project, userList: user_list });
         return;
     }
-    console.log(teammembers);
-    const teamMembersObjectArray = teammembers.map(x => ObjectId(x));
+    // console.log(teammembers);
+    const teamMembersObjectArray = [];
+    if(Array.isArray(teammembers)){
+        teamMembersObjectArray = teammembers.map(x => ObjectId(x));
+    }else{
+        teamMembersObjectArray.push(ObjectId(teammembers));
+    }
+    // const teamMembersObjectArray = teammembers.map(x => ObjectId(x));
     console.log('below')
     let newProject = await projects.updateProject(project_id,title, description, d, teamMembersObjectArray)
     res.redirect('/projects')

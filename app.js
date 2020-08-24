@@ -16,19 +16,24 @@ app.use(session({
   saveUninitialized: true
 }))
 
-
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+const handlebarsInstance = exphbs.create({
+  defaultLayout: 'main',
+  helpers: {
+    hour: (sec) => {
+			return Math.floor(sec/3600);
+    },
+    minute: (sec) => {
+			return Math.floor((sec%3600)/60);
+    },
+    second: (sec) => {
+			return sec%60;
+    },
+  },
+  partialsDir: [ 'views/' ]
+});
+app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
-var hbs = exphbs.create({});
-hbs.handlebars.registerHelper('hour', function(sec) {
-  return Math.floor(sec/3600);
-});
-hbs.handlebars.registerHelper('minute', function(sec) {
-  return Math.floor((sec%3600)/60);
-});
-hbs.handlebars.registerHelper('second', function(sec) {
-  return sec%60;
-});
+// var hbs = exphbs.create({});
 
 
 let directToSignIn = (req, res, next) => {

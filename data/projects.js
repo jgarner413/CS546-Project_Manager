@@ -38,7 +38,7 @@ module.exports = {
     },
 
     async getProject(id) {
-        if (!id) throw 'You must provide a user id to search for';
+        if (!id) throw 'You must provide a project id to search for';
 
         let objId = id;
         if(typeof id == 'string'){
@@ -46,7 +46,7 @@ module.exports = {
         }
         const projectsCollection = await projects();
         const project = await projectsCollection.findOne({ _id: objId });
-        if (project === null) throw 'No user with this id';
+        if (project === null) throw `No project with this id ${id}`;
 
         return project;
     },
@@ -83,7 +83,8 @@ module.exports = {
         let project_id = ObjectId(id);
         const projectsCollection = await projects();
         const project = await this.getProject(project_id);
-        const newTimeSpent = project.time + newTime;
+        const parsedNewTime = newTime.split(':');
+        const newTimeSpent = parseInt(project.time) + parseInt(parsedNewTime[0])*3600 + parseInt(parsedNewTime[1])*60 + parseInt(parsedNewTime[2]);
         const updatedInfo = await projectsCollection.updateOne({ _id: project_id }, { $set: {time: xss(newTimeSpent)}});
         if (updatedInfo.modifiedCount === 0) {
             throw 'Update time failed';
@@ -106,5 +107,5 @@ module.exports = {
         if (deletionInfo.deletedCount === 0)
           throw `Could not delete project with id of ${id}`;
         return true;
-      },
+    },
 };

@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Project Management</title>
     <link rel="stylesheet" href="/public/css/style.css">
     <script src="../../public/js/card.js"></script>
 </head>
+
 <body onload="getTime()">
     <header>
         <h1 class='grad1'>Project Management</h1>
     </header>
-        <div class="topnav">
-            <a class="active" href="/profile">Profile</a>
-            {{!-- <a href="/login">Login</a>
+    <div class="topnav">
+        <a class="active" href="/profile">Profile</a>
+        {{!-- <a href="/login">Login</a>
             <a href="/register">Register</a> --}}
-            <a href="/projects">Projects</a>
-            <a href="/addProjects">Add Projects</a>
-            <a href="/invite">Invite User</a>
-        </div>
+        <a href="/projects">Projects</a>
+        <a href="/addProjects">Add Projects</a>
+        <a href="/invite">Invite User</a>
+        <a href="/logout" id="logout">Log out</a>
+        {{!-- <div class="dropdown">
+            <span>{{user.username}}</span>
+            <div class="dropdown-content">
+                <p>Hello World!</p>
+            </div>
+        </div> --}}
+    </div>
 
     <main>
-    {{{body}}}
+        {{{body}}}
     </main>
     <br>
     <footer>Created by Josh Garner and Yunxiang Fan</footer>
-    <script
 </body>
+
 </html>

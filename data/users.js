@@ -40,7 +40,7 @@ module.exports = {
         const objId = ObjectId(id);
         const usersCollection = await users();
         const user = await usersCollection.findOne({ _id: objId });
-        if (user === null) throw 'No user with this id';
+        if (user === null) throw `No user with this id ${id}`;
 
         return user;
     },
@@ -48,7 +48,7 @@ module.exports = {
         if (!name) throw 'You must provide a user id to search for';
         const usersCollection = await users();
         const user = await usersCollection.findOne({ username: name });
-        if (user === null) throw 'No user with this id';
+        if (user === null) throw 'No user with this name';
 
         return user;
     },

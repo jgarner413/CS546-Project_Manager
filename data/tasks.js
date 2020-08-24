@@ -2,7 +2,7 @@ const mongoCollections = require('../config/mongoCollections');
 const projects = mongoCollections.projects;
 const users = mongoCollections.users;
 const tasks = mongoCollections.tasks;
-const usersDat = require('./users');
+const usersData = require('./users');
 const { ObjectId } = require('mongodb');
 const xss = require('xss');
 
@@ -17,7 +17,7 @@ module.exports = {
         //if(!deadline || typeof deadline != 'Date') throw 'you must provide a valid time';
         //moment("06/22/2015", "MM/DD/YYYY", true).isValid(); true
         //may need moment.js package
-        let user = await usersDat.getUser(assignedTo);
+        let user = await usersData.getUser(assignedTo);
         project_id = ObjectId(projectID);
         const tasksCollection = await tasks();
         let newTask = {
@@ -38,11 +38,11 @@ module.exports = {
 
     async getTask(id) {
         if (!id) throw 'You must provide a id to search for';
-
+        // console.log(id)
         const objId = ObjectId(id);
         const tasksCollection = await tasks();
         const task = await tasksCollection.findOne({ _id: objId });
-        if (task === null) throw 'No user with this id';
+        if (task === null) throw 'No task with this id';
 
         return task;
     },
@@ -81,7 +81,7 @@ module.exports = {
         const task = await this.getTask(taskId);
         
         const parsedNewTime = newTime.split(':');
-        const newTimeSpent = task.timespent + parseInt(parsedNewTime[0])*3600 + parseInt(parsedNewTime[1])*60 + parseInt(parsedNewTime[2]);
+        const newTimeSpent = parseInt(task.timespent) + parseInt(parsedNewTime[0])*3600 + parseInt(parsedNewTime[1])*60 + parseInt(parsedNewTime[2]);
         const updatedInfo = await tasksCollection.updateOne({ _id: task_Id }, { $set: {timespent: xss(newTimeSpent)}});
         if (updatedInfo.modifiedCount === 0) {
             throw 'Update time failed';
@@ -91,10 +91,19 @@ module.exports = {
     
     async removeTask(id) {
         const taskCollection = await tasks();
+        const projectCollection = await projects();
+        const task = await this.getTask(id);
+        const projectId = task.project_id;
         const objId = ObjectId(id);
+        const updatedPojectInfo = await projectCollection.updateOne({_id: projectId},{$pull:{tasks:id}});
+        if(updatedPojectInfo.modifiedCount === 0){
+            throw `Could not delete task ${id} from project`;
+        }
         const deletionInfo = await taskCollection.deleteOne({ _id: objId });
-        if (deletionInfo.deletedCount === 0)
-          throw `Could not delete post with id of ${id}`;
+        if (deletionInfo.deletedCount === 0){
+          throw `Could not delete task with id of ${id}`;
+        }
+        // console.log('task deleted')
         return true;
       },
     
