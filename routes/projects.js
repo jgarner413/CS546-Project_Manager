@@ -140,7 +140,7 @@ router.post('/editProject', async (req, res) => {
         let newProject = await projects.updateProject(project_id, title, description, d, teamMembersObjectArray)
         res.redirect('/projects')
     }catch(error){
-        console.log(error)
+        res.status(500).redirect('/projects');
     }
 
 });
@@ -164,15 +164,17 @@ router.get('/leaveproject/:id', async (req, res) => {
         await projects.updateMembers(req.params.id, teamMembersObjectArray)
         res.redirect('/projects');
     } catch (error) {
-        console.log(error)
+        res.status(304).redirect('/projects');
     }
 });
 router.post('/deleteproject/:id', async (req, res) => {
     try {
         await projects.removeProject(req.params.id);
+        res.redirect('/projects');
     } catch (error) {
         console.log(error)
+        res.status(500).redirect('/projects');
     }
-    res.redirect('/projects')
+    // res.redirect('/projects')
 });
 module.exports = router;

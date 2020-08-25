@@ -113,12 +113,12 @@ module.exports = {
         }
         const usersCollection = await user();
         let updatedInfo;
-        if(addMembers.length){
+        if(addMembers){
             for(var i = 0; i < addMembers.length; i++){
                 updatedInfo = await users.addPartipantProjectToUser(addMembers[i],id);
             }
         }
-        if(removedMembers.length){
+        if(removedMembers){
             for (let i = 0; i < removedMembers.length; i++) {
                 updatedInfo = await usersCollection.updateOne({ _id: removedMembers[i] }, { $pull: { participant: id } });
                 if (updatedInfo.modifiedCount === 0) {
@@ -149,10 +149,17 @@ module.exports = {
         return userProjects;
     },
     async removeProject(id) {
-        const projectCollection = await projects();
         const objId = ObjectId(id);
+        const thisProject = this.getProject(id);
+        let memberList = thisProject.members;
+        let creator = thisProject.creator;
+        await this.updateMembers(objId,[],memberList);
+        console.log('member updated')
+        const usersCollection = await user();
+        let updatedInfo = await usersCollection.updateOne({ _id: creator}, { $pull: { created: objId } });
+        const projectCollection = await projects();
         const deletionInfo = await projectCollection.deleteOne({ _id: objId });
-        if (deletionInfo.deletedCount === 0)
+        if (deletionInfo.deletedCount === 0 || updatedInfo === 0)
             throw `Could not delete project with id of ${id}`;
         return true;
     },
